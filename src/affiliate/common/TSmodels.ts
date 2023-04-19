@@ -1,4 +1,4 @@
-export interface SignUpModel {
+export interface SignUpProps {
   firstName: string;
   lastName: string;
   email: string;
@@ -7,12 +7,12 @@ export interface SignUpModel {
   password: string;
 }
 
-export interface LoginModel {
+export interface LoginProps {
   email: string;
   password: string;
 }
 
-export interface APIResponseModel {
+export interface APIErrorResponseProps {
   success: boolean;
   message: string;
 }
