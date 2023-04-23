@@ -1,4 +1,4 @@
-export interface SignUpProps {
+export interface SignUpAPIProps {
   firstName: string;
   lastName: string;
   email: string;
@@ -7,12 +7,22 @@ export interface SignUpProps {
   password: string;
 }
 
-export interface LoginProps {
+export interface LoginAPIProps {
   email: string;
   password: string;
+}
+
+export interface ForgotPasswordAPIProps {
+  email: string;
 }
 
 export interface APIErrorResponseProps {
   success: boolean;
   message: string;
+}
+
+export interface DashboardAPIProps {
+  uid: string;
+  balance: number;
+  refererCode: string;
 }

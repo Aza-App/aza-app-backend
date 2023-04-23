@@ -2,13 +2,21 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-export const SignUpSchema = new Schema(
+export const NewUserSchema = new Schema(
   {
     firstName: {
       type: String,
       require: true,
     },
     lastName: {
+      type: String,
+      require: true,
+    },
+    country: {
+      type: String,
+      require: true,
+    },
+    state: {
       type: String,
       require: true,
     },
@@ -36,4 +44,4 @@ export const SignUpSchema = new Schema(
   { timestamps: true }
 );
 
-export const SignUpModel = mongoose.model("aza_user", SignUpSchema);
+export const SignUpModel = mongoose.model("aza_user", NewUserSchema);
