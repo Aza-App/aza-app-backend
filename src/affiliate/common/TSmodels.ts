@@ -3,7 +3,7 @@ export interface SignUpAPIProps {
   lastName: string;
   email: string;
   phoneNumber: number;
-  referalCode?: string;
+  refererCode?: string;
   password: string;
 }
 

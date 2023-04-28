@@ -28,6 +28,10 @@ export const NewUserSchema = new Schema(
       type: String,
       require: true,
     },
+    accountBalance: {
+      type: String,
+      require: true,
+    },
     referralCode: {
       type: String,
       require: true,
