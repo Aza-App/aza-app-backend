@@ -19,3 +19,8 @@ const ActivityHistorySchema = new Schema(
   },
   { timestamps: true }
 );
+
+export const AffiliateModel = mongoose.model(
+  "aza_affiliate",
+  ActivityHistorySchema
+);

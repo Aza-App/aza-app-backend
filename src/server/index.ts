@@ -47,19 +47,16 @@ app.post("/api/affiliate/signup", (req: Request, res: Response) => {
     return res.status(400).json(APIErrorResponse);
   }
 
-  const checkEmailPhone: Promise<Props.APIErrorResponseProps> =
-    functions.uniqueEmailPhone(
+  if (
+    !functions.uniqueEmailPhone(
       SignUpDetails["email"],
       SignUpDetails["phoneNumber"]
-    );
-
-  // NEEDED AN ATTENTION
-  checkEmailPhone.then((result) => {
-    if (result.success === false) {
-      APIErrorResponse.message = constants.EMAIL_PHONE_ALREADY_EXIST;
-      return res.status(400).json(APIErrorResponse);
-    }
-  });
+    )
+  ) {
+    APIErrorResponse.message = constants.EMAIL_PHONE_ALREADY_EXIST;
+    console.log(APIErrorResponse);
+    return res.status(400).json(APIErrorResponse);
+  }
 
   // PREPARING FOR DATABASE
   const signup = new SignUpModel({
@@ -70,40 +67,34 @@ app.post("/api/affiliate/signup", (req: Request, res: Response) => {
 
   // Check if referrer Code exist
   if (SignUpDetails.refererCode !== "") {
-    SignUpModel.findOne({
+    const findReferrer = SignUpModel.findOne({
       referralCode: SignUpDetails.refererCode,
-    })
-      .then((result) => {
-        if (result === null) {
-          APIErrorResponse.message = constants.REFERRAL_CODE_NOT_EXIST;
-          return res.status(404).json(APIErrorResponse);
-        }
-        // SAVING TO DATABASE
-        signup
-          .save()
-          .then((result) => {
-            return res.status(200).json(result);
-          })
-          .catch((error) => {
-            APIErrorResponse.message = error;
-            return res.status(400).json(APIErrorResponse);
-          });
-      })
-      .catch((error) => {
-        APIErrorResponse.message = error;
-        return res.status(400).json(APIErrorResponse);
-      });
+    });
+
+    if (findReferrer === null) {
+      APIErrorResponse.message = constants.REFERRAL_CODE_NOT_EXIST;
+      return res.status(404).json(APIErrorResponse);
+    }
+
+    // SAVING TO DATABASE
+    try {
+      signup.save();
+      APIErrorResponse.success = true;
+      return res.status(200).json(APIErrorResponse);
+    } catch (error) {
+      APIErrorResponse.message = constants.SAVE_NEW_USER_SEV_ERR;
+      return res.status(400).json(APIErrorResponse);
+    }
   } else if (SignUpDetails.refererCode === "") {
     // SAVING TO DATABASE
-    signup
-      .save()
-      .then((result) => {
-        return res.status(200).json(result);
-      })
-      .catch((error) => {
-        APIErrorResponse.message = error;
-        return res.status(400).json(APIErrorResponse);
-      });
+    try {
+      signup.save();
+      APIErrorResponse.success = true;
+      return res.status(200).json(APIErrorResponse);
+    } catch (error) {
+      APIErrorResponse.message = constants.SAVE_NEW_USER_SEV_ERR;
+      return res.status(400).json(APIErrorResponse);
+    }
   } else {
     APIErrorResponse.message = constants.REFERRAL_CODE_NOT_EXIST;
     return res.status(404).json(APIErrorResponse);
