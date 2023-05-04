@@ -8,7 +8,6 @@ import { sendMail } from "../affiliate/mail/mail";
 
 const app = express();
 app.use(express.json());
-const port = 3000;
 
 app.post("/api/affiliate/signup", (req: Request, res: Response) => {
   // Reasons Why the API might failed
@@ -85,7 +84,7 @@ app.post("/api/affiliate/signup", (req: Request, res: Response) => {
         "Testing Email",
         "This is the content of mail testing"
       );
-      // signup.save();
+      signup.save();
       APIErrorResponse.success = true;
       return res.status(200).json(APIErrorResponse);
     } catch (error) {
@@ -256,10 +255,14 @@ app.post("/api/admin/affiliate", (req: Request, res: Response) => {
 
 const server = async () => {
   return await mongoose
-    .connect("mongodb://localhost:27017", { dbName: "aza_store" })
+    .connect(
+      "mongodb+srv://mbyahya2579:5GC7syBphWwk0u0J@ymbcluster.ujc7uom.mongodb.net/?retryWrites=true&w=majority",
+      { dbName: "aza_store" }
+    )
+    //  .connect("mongodb://localhost:27017", { dbName: "aza_store" })
     .then(() => {
-      app.listen(port, () => {
-        console.log(`[server]: Server is running at http://localhost:${port}`);
+      app.listen(3000, () => {
+        console.log(`[server]: Server is running at http://localhost:${3000}`);
       });
     })
     .catch((err: string) => {

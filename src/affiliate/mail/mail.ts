@@ -4,7 +4,7 @@ export const sendMail = async (
   recipient: string,
   mailSubject: string,
   mailText: string,
-  mailContent: any
+  mailContent: string
 ) => {
   // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
