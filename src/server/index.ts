@@ -4,6 +4,7 @@ import * as constants from "../affiliate/common/constants";
 import * as functions from "../affiliate/common/functions";
 import mongoose from "mongoose";
 import { SignUpModel } from "../affiliate/Schema/newUser";
+import { sendMail } from "../affiliate/mail/mail";
 
 const app = express();
 app.use(express.json());
@@ -78,7 +79,13 @@ app.post("/api/affiliate/signup", (req: Request, res: Response) => {
 
     // SAVING TO DATABASE
     try {
-      signup.save();
+      sendMail(
+        "iiabba2579@gmail.com",
+        "Email Test",
+        "Testing Email",
+        "This is the content of mail testing"
+      );
+      // signup.save();
       APIErrorResponse.success = true;
       return res.status(200).json(APIErrorResponse);
     } catch (error) {
@@ -88,7 +95,13 @@ app.post("/api/affiliate/signup", (req: Request, res: Response) => {
   } else if (SignUpDetails.refererCode === "") {
     // SAVING TO DATABASE
     try {
-      signup.save();
+      sendMail(
+        "iiabba2579@gmail.com",
+        "Email Test",
+        "Testing Email",
+        "This is the content of mail testing"
+      );
+      // signup.save();
       APIErrorResponse.success = true;
       return res.status(200).json(APIErrorResponse);
     } catch (error) {
@@ -218,6 +231,27 @@ app.post("/api/affiliate/dashboard", (req: Request, res: Response) => {
   }
 
   // FETCH FINANCIAL DETIALS FROM MONGODB
+});
+
+app.post("/api/admin/affiliate", (req: Request, res: Response) => {
+  // Reasons Why the API might failed
+  const APIErrorResponse: Props.APIErrorResponseProps = {
+    success: false,
+    message: "",
+  };
+
+  const contentType = req.headers["content-type"];
+  // Checking the validity of the Request Header
+  if (contentType !== "application/json") {
+    APIErrorResponse.message = constants.INVALID_HEADER_CONTENT_TYPE;
+    return res.status(400).json(APIErrorResponse);
+  }
+
+  // Checking if there no Message Input
+  if (Object.keys(req.body).length === 0) {
+    APIErrorResponse.message = constants.EMPTY_REQUEST_BODY;
+    return res.status(400).json(req.body);
+  }
 });
 
 const server = async () => {

@@ -21,6 +21,10 @@ export const uniqueEmailPhone = (email, phoneNumber) => {
     });
     if (result !== null) {
       return false;
+    } else if (Object.keys(result).length > 9) {
+      console.log(result);
+
+      return true;
     } else {
       return true;
     }
